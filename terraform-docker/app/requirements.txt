@@ -1,0 +1,4 @@
+Flask==2.3.2
+gpiozero==1.6.2
+pigpio==1.78
+prometheus-flask-exporter==0.22.4
