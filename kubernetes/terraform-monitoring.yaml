@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: roboport
+  labels:
+    name: terraform-monitoring
+    release: prometheus
+  name: terraform-monitoring
+  namespace: default
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: terraform-monitoring
+  template:
+    metadata:
+      labels:
+        app: terraform-monitoring
+    spec:
+      containers:
+      - name: terraform-monitoring
+        image: linuxrobotgeek/terraform-monitoring:latest
+        imagePullPolicy: Always
+        ports:
+        - name: roboport
+          containerPort: 5000
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: terraform-monitoring
+  namespace: default
+  labels:
+    app: terraform-monitoring
+spec:
+  selector:
+    app: terraform-monitoring
+  ports:
+    - name: terraform-monitoring
+      protocol: TCP
+      port: 5000
+      targetPort: roboport
+  type: LoadBalancer
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: terraform-monitoring
+  namespace: monitoring
+  labels:
+    app: terraform-monitoring
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: terraform-monitoring
+  endpoints:
+  - port: terraform-monitoring
+    path: /metrics
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - default
