@@ -4,8 +4,8 @@
   tasks:
     - name: Log into DockerHub
       community.docker.docker_login:
-        username: linuxrobotgeek
-        password: Utep123ti*
+        username: username  
+        password: password
     - name: Tag and push to docker hub
       docker_image:
         name: terraform-monitoring:latest
