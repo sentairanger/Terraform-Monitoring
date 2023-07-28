@@ -20,7 +20,7 @@ Now, let's cover the layers of the application as I've done before. This time th
 
 ### Code
 
-The main code is found under the `terraform-docker/app` directory. The main application is a Flask Web application that controls two robots. The screenshot below shows the design.
+The main code is found under the `terraform-docker/app` directory. The main application is a Flask Web application that controls two robots. The screenshot below shows the design. To use this application with a phone or tablet on Firefox or Chrome, change `mouseup` and `mousedown` in `logic.js` to `touchstart` and `touchend`.
 
 ![App](https://github.com/sentairanger/Terraform-Monitoring/blob/main/images/app.png)
 
@@ -79,3 +79,20 @@ To deploy on Azure first follow [this](https://developer.hashicorp.com/terraform
 ### Google Cloud
 
 To deploy on Google Cloud first follow [this](https://developer.hashicorp.com/terraform/tutorials/kubernetes/gke) to provision a GKE cluster and install `kubectl`.
+
+## Compatibility with other Frameworks
+
+This Monitoring System can be modified to be used in any other framework provided that the following is true:
+
+* The web framework supports remote GPIO access. This includes `pigpio-client` for Nodejs or `diozero` for Java for example. Some languages like Java do not support multiple Pi hosts so be aware of those limitations.
+* The web framework has a library for Prometheus such as `express-prometheus-middleware` for Nodejs.
+
+This has been tested and should work on the following:
+
+* Django
+* Pyramid
+* Nodejs
+* Spring Boot
+
+
+
